@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/routes/app_routes.dart';
+import 'package:ticketing_app/app/store/user_store_service.dart';
 import 'package:ticketing_app/presentation/login/repository/login_repository.dart';
 
 class LoginController extends GetxController {
@@ -22,7 +23,7 @@ class LoginController extends GetxController {
       response.when(
           success: (data) {
             if (data['message'] == 'Login Successful') {
-              print(data['data']);
+              UserStoreService.to.saveUser(data['data']);
               Get.offAndToNamed(Routes.MAIN);
             } else if (data['message'] == 'UserName is Empty') {
               Get.snackbar(
@@ -61,8 +62,8 @@ class LoginController extends GetxController {
       {required String? text,
       required String message,
       required String toShort}) {
-    if ((text == null || text.isEmpty) && !onTapLogin) return message;
-    if (onTapLogin && text!.length < 4) {
+    if (text == null || text.isEmpty) return message;
+    if (onTapLogin && text.length < 4) {
       onTapLogin = false;
       return toShort;
     }

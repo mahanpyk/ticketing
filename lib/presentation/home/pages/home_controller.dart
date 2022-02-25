@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/routes/app_routes.dart';
-import 'package:ticketing_app/presentation/main/repository/main_repository.dart';
+import 'package:ticketing_app/presentation/home/repository/home_repository.dart';
 
-class MainController extends GetxController {
-  MainController(this._repository);
+class HomeController extends GetxController {
+  HomeController(this._repository);
 
-  final MainRepository _repository;
+  final HomeRepository _repository;
 
   @override
   void onInit() {

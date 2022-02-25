@@ -18,6 +18,10 @@ class UserStoreService extends GetxController {
   }
 
   UserModel? getUser() {
-    return _storage.read(user);
+    var result = _storage.read(user);
+    if (result == null) {
+      return null;
+    }
+    return UserModel.fromJson(result);
   }
 }

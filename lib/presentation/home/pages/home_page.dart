@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/base/base_view.dart';
-import 'package:ticketing_app/presentation/main/pages/main_controller.dart';
+import 'package:ticketing_app/presentation/home/pages/home_controller.dart';
 
-class MainPage extends BaseView {
-  MainPage({Key? key}) : super(key: key);
+class HomePage extends BaseView {
+  HomePage({Key? key}) : super(key: key);
 
-  final MainController _controller = Get.find<MainController>();
+  final HomeController _controller = Get.find<HomeController>();
 
   @override
   Widget body(BuildContext context) {

@@ -1,15 +1,15 @@
 import 'package:ticketing_app/app/base/api_result.dart';
 import 'package:ticketing_app/app/base/base_repository.dart';
 
-abstract class MainRepository extends BaseRepository {
+abstract class HomeRepository extends BaseRepository {
   Future<ApiResult> getTickets();
 }
 
-class MainRepositoryImp extends MainRepository {
+class HomeRepositoryImp extends HomeRepository {
   @override
   Future<ApiResult> getTickets() async {
     final result = await postRequest(
-      url: 'login.php',
+      url: 'home.php',
       parameters: <String, String>{
         'username': 'userName',
         'password': 'password',

@@ -29,13 +29,12 @@ class LoginPage extends BaseView {
                         labelStyle: TextStyle(color: Colors.white),
                       ),
                       validator: (value) => _controller.validation(
-                          text: value,
-                          message: "لطفا نام کاربری خود را وارد کنید",
-                          toShort: "نام کاربری وارد شده کوتاه است"),
+                        text: value,
+                        message: "لطفا نام کاربری خود را وارد کنید",
+                        toShort: "نام کاربری وارد شده کوتاه است",
+                      ),
                       onChanged: (value) =>
                           _controller.formKey.currentState?.validate(),
-                      // onChanged: (value) =>
-                      //     _controller.formKey.currentState?.validate(),
                     ),
                     TextFormField(
                       controller: _controller.passwordController,
@@ -45,9 +44,10 @@ class LoginPage extends BaseView {
                         labelStyle: TextStyle(color: Colors.white),
                       ),
                       validator: (value) => _controller.validation(
-                          text: value,
-                          message: "لطفا کلمه عبور خود را وارد کنید",
-                          toShort: "کلمه عبور وارد شده کوتاه است"),
+                        text: value,
+                        message: "لطفا کلمه عبور خود را وارد کنید",
+                        toShort: "کلمه عبور وارد شده کوتاه است",
+                      ),
                       onChanged: (value) =>
                           _controller.formKey.currentState?.validate(),
                     ),

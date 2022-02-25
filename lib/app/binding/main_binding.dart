@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
-import 'package:ticketing_app/presentation/main/pages/main_controller.dart';
-import 'package:ticketing_app/presentation/main/repository/main_repository.dart';
+import 'package:ticketing_app/app/services/storege_service.dart';
+import 'package:ticketing_app/app/store/user_store_service.dart';
 
-class MainBinding implements Bindings {
+class MainBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<MainController>(
-            () => MainController(Get.find<MainRepository>()));
-    Get.lazyPut<MainRepository>(() => MainRepositoryImp());
+    Get.lazyPut<LocalStorage>(() => StorageService());
+
+    Get.put<UserStoreService>(UserStoreService(Get.find<LocalStorage>()),
+        permanent: true);
   }
 }
