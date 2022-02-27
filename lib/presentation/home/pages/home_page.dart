@@ -10,16 +10,30 @@ class HomePage extends BaseView {
 
   @override
   Widget body(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: ListView.builder(
-          // itemCount: ,
-          itemBuilder: (context, index) {
-            return Container();
-          },
-        ))
-      ],
-    );
+    return Obx(() {
+      if (_controller.ticketsList.isNotEmpty) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: _controller.ticketsList.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: _controller.ticketsList[index].description,
+                subtitle: _controller.ticketsList[index].description,
+              );
+            },
+          ),
+        );
+      } else {
+        return Center(
+          child: _controller.noResult.value
+              ? Image.asset(
+                  "assets/images/no_result_found.png",
+                  width: 350,
+                )
+              : const CircularProgressIndicator(),
+        );
+      }
+    });
   }
 
   @override
@@ -33,6 +47,8 @@ class HomePage extends BaseView {
   @override
   Widget? floatingActionButton() {
     return FloatingActionButton(
+      backgroundColor: const Color.fromRGBO(66, 63, 62, 100),
+      child: const Icon(Icons.add),
       onPressed: () => _controller.newTicket(),
     );
   }

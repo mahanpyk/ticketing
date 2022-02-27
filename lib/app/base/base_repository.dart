@@ -28,148 +28,21 @@ class BaseRepository {
     }
   }
 
-/*  Future<ResponseModel> putRequest(url, {data, message, needToken = true}) async {
-    add();
-    String token = needToken ? await getToken() : '';
-    if (token != null) {
-      Map<String, String> headers = {
-        'Accept': 'application/json',
-      };
-      if (needToken) {
-        headers.putIfAbsent('Authorization', () => 'Bearer $token');
-      }
-      try {
-        return dio
-            .put(
-          BASE_URL + url,
-          data: data,
-          options: Options(
-            headers: headers,
-            receiveDataWhenStatusError: true,
-            validateStatus: (_) => true,
-          ),
-        )
-            .then((value) {
-          ResponseModel res = ResponseModel(
-              body: value.data,
-              statusCode: value.statusCode,
-              success: value.statusCode == 200,
-              data: (!(value.data is List)) && value.data.containsKey('data')
-                  ? value.data['data']
-                  : value.data);
-          return res;
-        }).catchError((e, s) {
-          errorHandler(e, s, BASE_URL + url, data, 'put');
-          return ResponseModel(success: false);
-        });
-      } catch (e, s) {
-        errorHandler(e, s, BASE_URL + url, data, 'put');
-        return ResponseModel(
-          success: false,
-        );
-      }
+  Future getRequest({required String url, required String queryParams}) async {
+    final response = await http.get(
+      Uri.parse(baseURL + url + queryParams),
+      headers: {'Accept': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(utf8.decode(response.bodyBytes));
     } else {
-      return ResponseModel(
-        success: false,
-      );
+      printError(
+          info: "Request Sent error",
+          logFunction: () {
+            debugPrint(
+                "url: ${baseURL + url}, queryParams:$queryParams 'Get Request'");
+          });
+      return Exception();
     }
   }
-
-  Future<ResponseModel> getRequest(url,
-      {queryParameters,
-      message,
-      needToken = true,
-      useCom: false,
-      checkNet: true}) async {
-    String urlFinal = useCom ? COM_BASE_URL : BASE_URL;
-    if (checkNet) {
-      add();
-    }
-    String token = needToken ? await getToken() : '';
-    if (token != null) {
-      Map<String, String> headers = {
-        'Accept': 'application/json',
-      };
-      if (needToken) {
-        headers.putIfAbsent('Authorization', () => 'Bearer $token');
-      }
-      try {
-        return dio
-            .get(
-          BASE_URL + url,
-          options: Options(
-            headers: headers,
-            receiveDataWhenStatusError: true,
-            validateStatus: (_) => true,
-          ),
-          queryParameters: queryParameters,
-        )
-            .then((value) {
-          ResponseModel res = ResponseModel(
-            body: value.data,
-            statusCode: value.statusCode,
-            success: value.statusCode == 200,
-            data: (!(value.data is List) && !(value.data is bool)) &&
-                    value.data.containsKey('data')
-                ? value.data['data']
-                : value.data,
-          );
-          return res;
-        }).catchError((e, s) {
-          errorHandler(e, s, urlFinal + url, queryParameters, 'get');
-          return ResponseModel(success: false);
-        });
-      } catch (e, s) {
-        errorHandler(e, s, urlFinal + url, queryParameters, 'get');
-        return ResponseModel(
-          success: false,
-        );
-      }
-    } else {
-      return ResponseModel(
-        success: false,
-      );
-    }
-  }
-
-  Future<ResponseModel> deleteRequest(url, {id, message}) async {
-    add();
-    String token = await getToken();
-    if (token != null) {
-      try {
-        return dio
-            .delete(
-          BASE_URL + url + id,
-          options: Options(
-            headers: {
-              'Authorization': 'Bearer $token',
-              'Accept': 'application/json',
-            },
-            receiveDataWhenStatusError: true,
-            validateStatus: (_) => true,
-          ),
-        )
-            .then((value) {
-          ResponseModel res = ResponseModel(
-            body: value.data,
-            statusCode: value.statusCode,
-            success: value.statusCode == 200,
-          );
-          return res;
-        }).catchError((e, s) {
-          errorHandler(e, s, BASE_URL + url, id, 'delete');
-          return ResponseModel(success: false);
-        });
-      } catch (e, s) {
-        errorHandler(e, s, BASE_URL + url, id, 'delete');
-        return ResponseModel(
-          success: false,
-        );
-      }
-    } else {
-      return ResponseModel(
-        success: false,
-      );
-    }
-  }*/
 }
