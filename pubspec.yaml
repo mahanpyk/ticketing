@@ -15,6 +15,7 @@ dependencies:
   dio: ^4.0.4
   http: ^0.13.4
   json_annotation: ^4.4.0
+  persian_datetime_picker: ^2.4.0
 
 dev_dependencies:
   flutter_test:

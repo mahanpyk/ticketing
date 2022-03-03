@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/binding/home_binding.dart';
 import 'package:ticketing_app/app/binding/login_binding.dart';
+import 'package:ticketing_app/app/binding/new_ticket_binding.dart';
 import 'package:ticketing_app/app/routes/app_routes.dart';
 import 'package:ticketing_app/presentation/home/pages/home_page.dart';
 import 'package:ticketing_app/presentation/login/pages/login_page.dart';
+import 'package:ticketing_app/presentation/new_ticket/pages/new_ticket_page.dart';
 import 'package:ticketing_app/presentation/splash/pages/splash/splash_page.dart';
 
 abstract class AppPages {
@@ -18,14 +20,14 @@ abstract class AppPages {
       binding: LoginBinding(),
     ),
     GetPage(
-      name: Routes.MAIN,
+      name: Routes.HOME,
       page: () => HomePage(),
       binding: HomeBinding(),
     ),
     GetPage(
       name: Routes.NEW_TICKET,
-      page: () => HomePage(),
-      binding: HomeBinding(),
+      page: () => NewTicketPage(),
+      binding: NewTicketBinding(),
     ),
   ];
 }
