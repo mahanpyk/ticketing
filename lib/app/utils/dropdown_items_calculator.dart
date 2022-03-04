@@ -1,5 +1,5 @@
 int dropdownIntegerItems(String input) {
-  int result = 0;
+  int result;
   switch (input) {
     case "--انتخاب کنید--":
       result = 1;
@@ -23,14 +23,14 @@ int dropdownIntegerItems(String input) {
       result = 7;
       break;
     default:
-      result = 0;
+      result = 1;
       break;
   }
   return result;
 }
 
 String dropdownStringItems(int input) {
-  String result = '';
+  String result;
   switch (input) {
     case 1:
       result = "--انتخاب کنید--";

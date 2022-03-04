@@ -30,14 +30,26 @@ class HomeController extends GetxController {
             noResult(true);
           } else {
             noResult(false);
+            ticketsList.clear();
             ticketsList.addAll(data);
           }
         },
         failure: (error) {});
   }
 
-  void newTicket() {
-    Get.toNamed(Routes.NEW_TICKET);
+  void newTicket() async {
+    var result = await Get.toNamed(Routes.NEW_TICKET);
+    if (result != null && result) {
+      getTickets();
+    }
+  }
+
+  void onTapTicket({required TicketModel item}) async {
+    var result =
+        await Get.toNamed(Routes.TICKET_DETAILS, arguments: {'ticket': item});
+    if (result != null && result) {
+      getTickets();
+    }
   }
 
   @override

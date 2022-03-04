@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
-import 'package:ticketing_app/app/models/ticket_model/ticket_model.dart';
 import 'package:ticketing_app/app/models/user_model/user_model.dart';
 import 'package:ticketing_app/app/store/user_store_service.dart';
 import 'package:ticketing_app/app/utils/dropdown_items_calculator.dart';
@@ -13,17 +12,13 @@ class NewTicketController extends GetxController {
   final NewTicketRepository _repository;
   final TextEditingController descriptionController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  int unitId = 0;
-  TicketModel? ticketModel;
+  int unitId = 1;
   RxString dropdownTitle = '--انتخاب کنید--'.obs;
   late UserModel userModel;
 
   @override
   onInit() {
     super.onInit();
-    if (Get.arguments != null) {
-      ticketModel = Get.arguments['ticket'];
-    }
     userModel = UserStoreService.to.getUser()!;
   }
 
@@ -39,7 +34,7 @@ class NewTicketController extends GetxController {
   }
 
   void newTicket() async {
-    if (descriptionController.text.length > 10 && unitId != 0) {
+    if (descriptionController.text.length > 10 && unitId != 1) {
       final response = await _repository.postNewTickets(
         unitId: unitId.toString(),
         userId: userModel.userId,
@@ -54,12 +49,14 @@ class NewTicketController extends GetxController {
             'عملیات موفق',
             'تیکت شما با موفقیت ثبت شد',
             backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
           );
         } else {
           Get.snackbar(
             'عملیات ناموفق',
             'خطا در هنگام ثبت تیکت. لطفا اطلاعات ورودی را چک کنید و مجددا تلاش کنید',
             backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
           );
         }
       }, failure: (error) {
@@ -67,6 +64,7 @@ class NewTicketController extends GetxController {
           'عملیات ناموفق',
           'خطا در هنگام ثبت تیکت. لطفا اطلاعات ورودی را چک کنید و مجددا تلاش کنید',
           backgroundColor: Colors.grey,
+          snackPosition: SnackPosition.BOTTOM,
         );
       });
     } else {
@@ -80,6 +78,13 @@ class NewTicketController extends GetxController {
       required String toShort}) {
     if (text == null || text.isEmpty) return message;
     if (text.length < 10) return toShort;
+    return null;
+  }
+
+  dropdownValidator({required Object? input}) {
+    if (input == null || input == "--انتخاب کنید--") {
+      return 'انتخاب یک مورد الزامی است';
+    }
     return null;
   }
 

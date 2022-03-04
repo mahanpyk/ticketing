@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ticketing_app/app/theme/app_colors.dart';
 
 abstract class BaseView extends GetView {
   BaseView({Key? key}) : super(key: key);
@@ -82,7 +83,7 @@ abstract class BaseView extends GetView {
   }
 
   Color pageBackgroundColor() {
-    return Colors.white;
+    return AppColors.background;
   }
 
   Color statusBarColor() {

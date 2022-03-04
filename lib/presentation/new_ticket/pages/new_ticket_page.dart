@@ -13,9 +13,12 @@ class NewTicketPage extends BaseView {
     return Column(
       children: [
         Container(
-          color: const Color.fromRGBO(66, 63, 62, 1),
           padding: const EdgeInsets.all(16),
           margin: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: const Color.fromRGBO(66, 63, 62, 1),
+          ),
           child: Column(
             children: [
               Form(
@@ -41,12 +44,8 @@ class NewTicketPage extends BaseView {
                         }).toList(),
                         style: const TextStyle(color: Colors.white),
                         dropdownColor: const Color.fromRGBO(66, 63, 62, 1),
-                        validator: (value) {
-                          if (value == null || value == "--انتخاب کنید--") {
-                            return 'انتخاب یک مورد الزامی است';
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            _controller.dropdownValidator(input: value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) => _controller.onChangeDropdown(
                             onSelected: value!.toString()),
@@ -95,6 +94,4 @@ class NewTicketPage extends BaseView {
     );
   }
 
-  @override
-  Color pageBackgroundColor() => const Color.fromRGBO(0, 0, 0, 1);
 }

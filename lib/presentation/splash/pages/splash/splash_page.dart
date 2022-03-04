@@ -42,8 +42,5 @@ class SplashPage extends BaseView {
   }
 
   @override
-  Color pageBackgroundColor() => const Color(0x00121212);
-
-  @override
   bool safeArea() => false;
 }
