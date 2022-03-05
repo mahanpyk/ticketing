@@ -17,16 +17,18 @@ class LoginPage extends BaseView {
           padding: const EdgeInsets.all(16),
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: AppColors.surfaceDark,
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0xff7F8187),
-                  spreadRadius: 0.2,
-                  blurRadius: 5,
-                  offset: Offset(0, 0), // changes position of shadow
-                ),
-              ]),
+            borderRadius: BorderRadius.circular(8),
+            color: AppColors.surfaceDark,
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.shadow,
+                spreadRadius: 0,
+                blurRadius: 15,
+                blurStyle: BlurStyle.outer,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
           child: Column(
             children: [
               Form(
@@ -34,31 +36,27 @@ class LoginPage extends BaseView {
                 child: Column(
                   children: [
                     TextFormField(
-                      style: const TextStyle(color: Colors.white),
+                      style: Get.theme.textTheme.bodyText1,
                       controller: _controller.userNameController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "نام کاربری",
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        labelStyle: Get.theme.textTheme.bodyText1!
+                            .copyWith(color: AppColors.subTitleTextColor),
                       ),
                       validator: (value) => _controller.validation(
                         text: value,
                         message: "لطفا نام کاربری خود را وارد کنید",
-                            toShort: "نام کاربری وارد شده کوتاه است",
-                          ),
+                        toShort: "نام کاربری وارد شده کوتاه است",
+                      ),
                     ),
                     TextFormField(
-                      style: const TextStyle(color: Colors.white),
+                      style: Get.theme.textTheme.bodyText1,
                       controller: _controller.passwordController,
                       obscureText: true,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "کلمه عبور",
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        labelStyle: Get.theme.textTheme.bodyText1!
+                            .copyWith(color: AppColors.subTitleTextColor),
                       ),
                       validator: (value) => _controller.validation(
                         text: value,
@@ -80,14 +78,10 @@ class LoginPage extends BaseView {
                       onTap: () => _controller.onTapButton(),
                       child: Container(
                         padding: const EdgeInsets.all(8),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'ورود',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Get.theme.textTheme.caption,
                           ),
                         ),
                         decoration: const BoxDecoration(
@@ -117,7 +111,10 @@ class LoginPage extends BaseView {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
-      title: const Text("ورود", style: TextStyle(color: Colors.white)),
+      title: Text(
+        "ورود",
+        style: Get.theme.textTheme.headline6,
+      ),
       backgroundColor: AppColors.surfaceDark,
     );
   }

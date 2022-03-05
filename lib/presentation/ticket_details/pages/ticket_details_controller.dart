@@ -14,6 +14,7 @@ class TicketDetailsController extends GetxController {
   TextEditingController replayController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RxString dropdownTitle = '--انتخاب کنید--'.obs;
+  RxString fullName = ''.obs;
   int unitId = 1;
   late TicketModel ticketModel;
   late UserModel userModel;
@@ -24,6 +25,22 @@ class TicketDetailsController extends GetxController {
     ticketModel = Get.arguments['ticket'];
     userModel = UserStoreService.to.getUser()!;
     dropdownTitle(dropdownStringItems(int.parse(ticketModel.unitId)));
+    getFullName();
+  }
+
+  void getFullName() async {
+    final response =
+        await _repository.getFullName(userId: int.parse(userModel.userId));
+    response.when(
+        success: (data) => fullName(data),
+        failure: (error) {
+          Get.snackbar(
+            'خطا در دریافت اطلاعات',
+            'خطا در هنگام دریافت اطلاعات. لطفا مجددا تلاش کنید',
+            backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        });
   }
 
   void onChangeDropdown({required String onSelected}) {

@@ -38,16 +38,16 @@ class HomePage extends BaseView {
                             title: Text(
                               dropdownStringItems(int.parse(
                                   _controller.ticketsList[index].unitId)),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              style: Get.theme.textTheme.bodyText1,
                             ),
                             subtitle: Text(
                               _controller.ticketsList[index].description,
-                              style: const TextStyle(color: Colors.white70),
+                              style: Get.theme.textTheme.caption!
+                                  .copyWith(color: AppColors.subTitleTextColor),
                             ),
                             trailing: Text(
                               _controller.ticketsList[index].date,
-                              style: const TextStyle(fontSize: 10),
+                              style: Get.theme.textTheme.overline,
                             ),
                             onTap: () => _controller.onTapTicket(
                                 item: _controller.ticketsList[index]),
@@ -77,7 +77,10 @@ class HomePage extends BaseView {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
-      title: const Text("تیک ها", style: TextStyle(color: Colors.white)),
+      title: Text(
+        "تیک ها",
+        style: Get.theme.textTheme.headline6,
+      ),
       backgroundColor: AppColors.surfaceDark,
     );
   }
@@ -91,15 +94,16 @@ class HomePage extends BaseView {
         height: 60,
         child: const Icon(Icons.add),
         decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              radius: 1,
-              center: Alignment(-0.1, -0.6),
-              colors: [
-                AppColors.buttonFirstColor,
-                AppColors.buttonSecondColor,
-              ],
-            )),
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            radius: 1,
+            center: Alignment(-0.1, -0.6),
+            colors: [
+              AppColors.buttonFirstColor,
+              AppColors.buttonSecondColor,
+            ],
+          ),
+        ),
       ),
       onPressed: () => _controller.newTicket(),
     );

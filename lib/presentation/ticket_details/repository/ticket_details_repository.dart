@@ -20,6 +20,8 @@ abstract class TicketDetailsRepository extends BaseRepository {
     required String date,
     required String isRead,
   });
+
+  Future<ApiResult<String>> getFullName({required int userId});
 }
 
 class TicketDetailsRepositoryImp extends TicketDetailsRepository {
@@ -75,5 +77,17 @@ class TicketDetailsRepositoryImp extends TicketDetailsRepository {
       return ApiResult.failure(error: response);
     }
     return ApiResult.success(data: {'message': response['message']});
+  }
+
+  @override
+  Future<ApiResult<String>> getFullName({required int userId}) async {
+    final response = await getRequest(
+      url: 'get_user.php',
+      queryParams: '?userId=$userId',
+    );
+    if (response == Exception()) {
+      return ApiResult.failure(error: response);
+    }
+    return ApiResult.success(data: response['fullName']);
   }
 }

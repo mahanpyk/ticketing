@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/base/base_view.dart';
+import 'package:ticketing_app/app/theme/app_colors.dart';
 import 'package:ticketing_app/presentation/ticket_details/pages/ticket_details_controller.dart';
 
 class TicketDetailsPage extends BaseView {
@@ -11,139 +12,173 @@ class TicketDetailsPage extends BaseView {
 
   @override
   Widget body(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: const Color.fromRGBO(66, 63, 62, 1),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _controller.userModel.userId == "1"
-                  ? Obx(() {
-                      return DropdownButtonFormField(
-                        value: _controller.dropdownTitle.value,
-                        items: <String>[
-                          "--انتخاب کنید--",
-                          "سراسري",
-                          "كارداني فني و حرفه اي",
-                          "كارداني به كارشناسي",
-                          "دانشگاه جامع علمي و كاربردي (كارداني/كارشناسي)",
-                          "كارشناسي ارشد",
-                          "دكتري"
-                        ].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        style: const TextStyle(color: Colors.white),
-                        dropdownColor: const Color.fromRGBO(66, 63, 62, 1),
-                        validator: (value) =>
-                            _controller.dropdownValidator(input: value),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) => _controller.onChangeDropdown(
-                            onSelected: value!.toString()),
-                        iconDisabledColor: Colors.white,
-                      );
-                    })
-                  : Column(
-                      children: [
-                        const Text(
-                          'عنوان:',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          _controller.dropdownTitle.value,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-              const SizedBox(height: 24),
-              const Text(
-                "توضیحات:",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _controller.ticketModel.description,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-        if (_controller.userModel.userId == "8" ||
-            _controller.userModel.userId != "1")
+    return SingleChildScrollView(
+      child: Column(
+        children: [
           Container(
+            width: Get.width,
             padding: const EdgeInsets.all(16),
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: const Color.fromRGBO(66, 63, 62, 1),
-            ),
-            child: Column(
-              children: [
-                if (_controller.userModel.userId == "8")
-                  Column(
-                    children: const [
-                      Text(
-                        'پاسخ:',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                Form(
-                  key: _controller.formKey,
-                  child: TextFormField(
-                    controller: _controller.replayController,
-                    decoration: const InputDecoration(
-                      labelText: "پاسخ",
-                      labelStyle: TextStyle(color: Colors.white),
-                    ),
-                    validator: (value) =>
-                        _controller.replayValidator(input: value),
-                    minLines: 1,
-                    maxLines: 8,
-                  ),
+              color: AppColors.surfaceDark,
+              boxShadow: const [
+                BoxShadow(
+                  color: AppColors.shadow,
+                  spreadRadius: 0,
+                  blurRadius: 15,
+                  blurStyle: BlurStyle.outer,
+                  offset: Offset(0, 0), // changes position of shadow
                 ),
               ],
             ),
+            child: Obx(() {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'تاریخ درخواست:',
+                    style: Get.theme.textTheme.bodyText1,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _controller.ticketModel.date,
+                    style: Get.theme.textTheme.bodyText2,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'نام و نام خانوادگی:',
+                    style: Get.theme.textTheme.bodyText1,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _controller.fullName.value,
+                    style: Get.theme.textTheme.bodyText2,
+                  ),
+                  const SizedBox(height: 24),
+                  _controller.userModel.userId == "1"
+                      ? DropdownButtonFormField(
+                          value: _controller.dropdownTitle.value,
+                          items: <String>[
+                            "--انتخاب کنید--",
+                            "سراسري",
+                            "كارداني فني و حرفه اي",
+                            "كارداني به كارشناسي",
+                            "دانشگاه جامع علمي و كاربردي (كارداني/كارشناسي)",
+                            "كارشناسي ارشد",
+                            "دكتري"
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: Get.theme.textTheme.bodyText1,
+                              ),
+                            );
+                          }).toList(),
+                          style: Get.theme.textTheme.bodyText1,
+                          dropdownColor: AppColors.surfaceDark,
+                          validator: (value) =>
+                              _controller.dropdownValidator(input: value),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (value) => _controller.onChangeDropdown(
+                              onSelected: value!.toString()),
+                          iconDisabledColor: Colors.white,
+                        )
+                      : Column(
+                          children: [
+                            Text(
+                              'عنوان:',
+                              style: Get.theme.textTheme.bodyText1,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              _controller.dropdownTitle.value,
+                              style: Get.theme.textTheme.bodyText2,
+                            ),
+                          ],
+                        ),
+                  const SizedBox(height: 24),
+                  Text(
+                    "توضیحات:",
+                    style: Get.theme.textTheme.bodyText1,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _controller.ticketModel.description,
+                    style: Get.theme.textTheme.bodyText2,
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              );
+            }),
           ),
-      ],
+          if (_controller.userModel.userId == "8" ||
+              _controller.userModel.userId != "1")
+            Container(
+              width: Get.width,
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.surfaceDark,
+                boxShadow: const [
+                  BoxShadow(
+                    color: AppColors.shadow,
+                    spreadRadius: 0,
+                    blurRadius: 15,
+                    blurStyle: BlurStyle.outer,
+                    offset: Offset(0, 0), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  _controller.userModel.userId == "8" ||
+                          _controller.ticketModel.replay != null
+                      ? Column(
+                          children: [
+                            Text(
+                              'پاسخ:',
+                              style: Get.theme.textTheme.bodyText1,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(_controller.ticketModel.replay!,
+                                style: Get.theme.textTheme.bodyText2),
+                          ],
+                        )
+                      : Form(
+                          key: _controller.formKey,
+                          child: TextFormField(
+                            style: Get.theme.textTheme.bodyText1,
+                            controller: _controller.replayController,
+                            decoration: InputDecoration(
+                              labelText: "پاسخ",
+                              labelStyle: Get.theme.textTheme.bodyText1!
+                                  .copyWith(color: AppColors.subTitleTextColor),
+                            ),
+                            validator: (value) =>
+                                _controller.replayValidator(input: value),
+                            minLines: 1,
+                            maxLines: 8,
+                          ),
+                        ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
-      title: const Text("تیک", style: TextStyle(color: Colors.white)),
-      backgroundColor: const Color.fromRGBO(66, 63, 62, 1),
+      title: Text(
+        "تیک",
+        style: Get.theme.textTheme.headline6,
+      ),
+      backgroundColor: AppColors.surfaceDark,
     );
   }
 
@@ -154,12 +189,32 @@ class TicketDetailsPage extends BaseView {
     } else {
       return FloatingActionButton(
         backgroundColor: Colors.red,
-        child: Icon(
-            _controller.userModel.userId == "1" ? Icons.edit : Icons.check),
+        child: Container(
+          width: 60,
+          height: 60,
+          child: Icon(
+              _controller.userModel.userId == "1" ? Icons.edit : Icons.check),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              radius: 1,
+              center: Alignment(-0.1, -0.6),
+              colors: [
+                AppColors.buttonFirstColor,
+                AppColors.buttonSecondColor,
+              ],
+            ),
+          ),
+        ),
         onPressed: () => _controller.userModel.userId == "1"
             ? _controller.updateTicket(replay: false)
             : _controller.updateTicket(replay: true),
       );
     }
+  }
+
+  @override
+  bool resizeToAvoidBottomInset() {
+    return true;
   }
 }

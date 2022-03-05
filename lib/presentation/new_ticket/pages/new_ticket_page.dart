@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/base/base_view.dart';
+import 'package:ticketing_app/app/theme/app_colors.dart';
 import 'package:ticketing_app/presentation/new_ticket/pages/new_ticket_controller.dart';
 
 class NewTicketPage extends BaseView {
@@ -17,7 +18,16 @@ class NewTicketPage extends BaseView {
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: const Color.fromRGBO(66, 63, 62, 1),
+            color: AppColors.surfaceDark,
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.shadow,
+                spreadRadius: 0,
+                blurRadius: 15,
+                blurStyle: BlurStyle.outer,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -39,11 +49,14 @@ class NewTicketPage extends BaseView {
                         ].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value),
+                            child: Text(
+                              value,
+                              style: Get.theme.textTheme.bodyText1,
+                            ),
                           );
                         }).toList(),
-                        style: const TextStyle(color: Colors.white),
-                        dropdownColor: const Color.fromRGBO(66, 63, 62, 1),
+                        style: Get.theme.textTheme.bodyText1,
+                        dropdownColor: AppColors.surfaceDark,
                         validator: (value) =>
                             _controller.dropdownValidator(input: value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -53,10 +66,12 @@ class NewTicketPage extends BaseView {
                       );
                     }),
                     TextFormField(
+                      style: Get.theme.textTheme.bodyText1,
                       controller: _controller.descriptionController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "توضیحات",
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: Get.theme.textTheme.bodyText1!
+                            .copyWith(color: AppColors.subTitleTextColor),
                       ),
                       validator: (value) => _controller.validation(
                         text: value,
@@ -80,8 +95,11 @@ class NewTicketPage extends BaseView {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return AppBar(
-      title: const Text("تیک جدید", style: TextStyle(color: Colors.white)),
-      backgroundColor: const Color.fromRGBO(66, 63, 62, 1),
+      title: Text(
+        "تیک جدید",
+        style: Get.theme.textTheme.headline6,
+      ),
+      backgroundColor: AppColors.surfaceDark,
     );
   }
 
@@ -89,9 +107,23 @@ class NewTicketPage extends BaseView {
   Widget? floatingActionButton() {
     return FloatingActionButton(
       backgroundColor: Colors.red,
-      child: const Icon(Icons.check),
+      child: Container(
+        width: 60,
+        height: 60,
+        child: const Icon(Icons.check),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            radius: 1,
+            center: Alignment(-0.1, -0.6),
+            colors: [
+              AppColors.buttonFirstColor,
+              AppColors.buttonSecondColor,
+            ],
+          ),
+        ),
+      ),
       onPressed: () => _controller.newTicket(),
     );
   }
-
 }
