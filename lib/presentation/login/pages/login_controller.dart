@@ -42,7 +42,7 @@ class LoginController extends GetxController {
             } else if (data['message'] == 'Login Failed') {
               Get.snackbar(
                 'ورود ناموفق',
-                'هیچ کاربری با اطلاعات وارد شده یافت نشد!',
+                '!هیچ کاربری با اطلاعات وارد شده یافت نشد',
                 backgroundColor: Colors.grey,
                 snackPosition: SnackPosition.BOTTOM,
               );

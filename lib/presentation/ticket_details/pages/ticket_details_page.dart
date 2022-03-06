@@ -149,7 +149,7 @@ class TicketDetailsPage extends BaseView {
                       : _controller.userModel!.unitId == "8" &&
                               _controller.ticketModel.replay == null
                           ? Text(
-                              'هیچ پاسخی هنوز از سمت کارشناس مربوطه ثبت نشده است!!',
+                              '!!هیچ پاسخی هنوز از سمت کارشناس مربوطه ثبت نشده است',
                               style: Get.theme.textTheme.bodyText1,
                             )
                           : Form(

@@ -21,9 +21,15 @@ class LoginRepositoryImp extends LoginRepository {
     if (response == Exception()) {
       return ApiResult.failure(error: response);
     }
-    return ApiResult.success(data: {
-      'message': response['message'],
-      'data': UserModel.fromJson(response["data"])
-    });
+    if (response['message'] == 'Login Successful') {
+      return ApiResult.success(data: {
+        'message': response['message'],
+        'data': UserModel.fromJson(response["data"])
+      });
+    } else {
+      return ApiResult.success(data: {
+        'message': response['message'],
+      });
+    }
   }
 }
