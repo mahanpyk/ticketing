@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/base/base_view.dart';
 import 'package:ticketing_app/app/theme/app_colors.dart';
+import 'package:ticketing_app/app/utils/dropdown_items_calculator.dart';
 import 'package:ticketing_app/presentation/ticket_details/pages/ticket_details_controller.dart';
 
 class TicketDetailsPage extends BaseView {
@@ -52,22 +53,15 @@ class TicketDetailsPage extends BaseView {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _controller.fullName.value,
+                    _controller.ticketModel.fullName,
                     style: Get.theme.textTheme.bodyText2,
                   ),
                   const SizedBox(height: 24),
-                  _controller.userModel.userId == "1"
+                  _controller.userModel!.userId == "1" &&
+                          _controller.ticketModel.replay == null
                       ? DropdownButtonFormField(
                           value: _controller.dropdownTitle.value,
-                          items: <String>[
-                            "--انتخاب کنید--",
-                            "سراسري",
-                            "كارداني فني و حرفه اي",
-                            "كارداني به كارشناسي",
-                            "دانشگاه جامع علمي و كاربردي (كارداني/كارشناسي)",
-                            "كارشناسي ارشد",
-                            "دكتري"
-                          ].map((String value) {
+                          items: dropdownItems.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(
@@ -86,6 +80,7 @@ class TicketDetailsPage extends BaseView {
                           iconDisabledColor: Colors.white,
                         )
                       : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'عنوان:',
@@ -113,8 +108,8 @@ class TicketDetailsPage extends BaseView {
               );
             }),
           ),
-          if (_controller.userModel.userId == "8" ||
-              _controller.userModel.userId != "1")
+          if (_controller.ticketModel.replay != null ||
+              _controller.userModel!.unitId == "8")
             Container(
               width: Get.width,
               padding: const EdgeInsets.all(16),
@@ -133,36 +128,47 @@ class TicketDetailsPage extends BaseView {
                 ],
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _controller.userModel.userId == "8" ||
-                          _controller.ticketModel.replay != null
+                  (_controller.userModel!.unitId == "8" &&
+                              _controller.ticketModel.replay != null) ||
+                          (_controller.userModel!.unitId != "8" &&
+                              _controller.ticketModel.replay != null)
                       ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'پاسخ:',
                               style: Get.theme.textTheme.bodyText1,
                             ),
                             const SizedBox(height: 8),
-                            Text(_controller.ticketModel.replay!,
+                            Text(_controller.ticketModel.replay ?? "",
                                 style: Get.theme.textTheme.bodyText2),
                           ],
                         )
-                      : Form(
-                          key: _controller.formKey,
-                          child: TextFormField(
-                            style: Get.theme.textTheme.bodyText1,
-                            controller: _controller.replayController,
-                            decoration: InputDecoration(
-                              labelText: "پاسخ",
-                              labelStyle: Get.theme.textTheme.bodyText1!
-                                  .copyWith(color: AppColors.subTitleTextColor),
+                      : _controller.userModel!.unitId == "8" &&
+                              _controller.ticketModel.replay == null
+                          ? Text(
+                              'هیچ پاسخی هنوز از سمت کارشناس مربوطه ثبت نشده است!!',
+                              style: Get.theme.textTheme.bodyText1,
+                            )
+                          : Form(
+                              key: _controller.formKey,
+                              child: TextFormField(
+                                style: Get.theme.textTheme.bodyText1,
+                                controller: _controller.replayController,
+                                decoration: InputDecoration(
+                                  labelText: "پاسخ",
+                                  labelStyle: Get.theme.textTheme.bodyText1!
+                                      .copyWith(
+                                          color: AppColors.subTitleTextColor),
+                                ),
+                                validator: (value) =>
+                                    _controller.replayValidator(input: value),
+                                minLines: 1,
+                                maxLines: 8,
+                              ),
                             ),
-                            validator: (value) =>
-                                _controller.replayValidator(input: value),
-                            minLines: 1,
-                            maxLines: 8,
-                          ),
-                        ),
                 ],
               ),
             ),
@@ -184,7 +190,8 @@ class TicketDetailsPage extends BaseView {
 
   @override
   Widget? floatingActionButton() {
-    if (_controller.userModel.userId == "8") {
+    if (_controller.userModel!.unitId == "8" ||
+        _controller.ticketModel.isRead == '2') {
       return null;
     } else {
       return FloatingActionButton(
@@ -193,7 +200,7 @@ class TicketDetailsPage extends BaseView {
           width: 60,
           height: 60,
           child: Icon(
-              _controller.userModel.userId == "1" ? Icons.edit : Icons.check),
+              _controller.userModel!.userId == "1" ? Icons.edit : Icons.check),
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
@@ -206,7 +213,7 @@ class TicketDetailsPage extends BaseView {
             ),
           ),
         ),
-        onPressed: () => _controller.userModel.userId == "1"
+        onPressed: () => _controller.userModel!.userId == "1"
             ? _controller.updateTicket(replay: false)
             : _controller.updateTicket(replay: true),
       );

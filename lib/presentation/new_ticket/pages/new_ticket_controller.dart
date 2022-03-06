@@ -14,13 +14,7 @@ class NewTicketController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int unitId = 1;
   RxString dropdownTitle = '--انتخاب کنید--'.obs;
-  late UserModel userModel;
-
-  @override
-  onInit() {
-    super.onInit();
-    userModel = UserStoreService.to.getUser()!;
-  }
+  UserModel? userModel = UserStoreService.to.getUser();
 
   String calcDate() {
     Date date = Jalali.fromDateTime(DateTime.now());
@@ -37,10 +31,11 @@ class NewTicketController extends GetxController {
     if (descriptionController.text.length > 10 && unitId != 1) {
       final response = await _repository.postNewTickets(
         unitId: unitId.toString(),
-        userId: userModel.userId,
+        userId: userModel!.userId,
         description: descriptionController.text,
         date: calcDate(),
         isRead: "1",
+        fullName: "1",
       );
       response.when(success: (data) {
         if (data['message'] == 'insert data Successful') {

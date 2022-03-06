@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketing_app/app/base/base_view.dart';
 import 'package:ticketing_app/app/theme/app_colors.dart';
+import 'package:ticketing_app/app/utils/dropdown_items_calculator.dart';
 import 'package:ticketing_app/presentation/new_ticket/pages/new_ticket_controller.dart';
 
 class NewTicketPage extends BaseView {
@@ -38,15 +39,7 @@ class NewTicketPage extends BaseView {
                     Obx(() {
                       return DropdownButtonFormField(
                         value: _controller.dropdownTitle.value,
-                        items: <String>[
-                          "--انتخاب کنید--",
-                          "سراسري",
-                          "كارداني فني و حرفه اي",
-                          "كارداني به كارشناسي",
-                          "دانشگاه جامع علمي و كاربردي (كارداني/كارشناسي)",
-                          "كارشناسي ارشد",
-                          "دكتري"
-                        ].map((String value) {
+                        items: dropdownItems.map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(
@@ -105,25 +98,29 @@ class NewTicketPage extends BaseView {
 
   @override
   Widget? floatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.red,
-      child: Container(
-        width: 60,
-        height: 60,
-        child: const Icon(Icons.check),
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            radius: 1,
-            center: Alignment(-0.1, -0.6),
-            colors: [
-              AppColors.buttonFirstColor,
-              AppColors.buttonSecondColor,
-            ],
+    if (_controller.userModel!.unitId != '8') {
+      return null;
+    } else {
+      return FloatingActionButton(
+        backgroundColor: Colors.red,
+        child: Container(
+          width: 60,
+          height: 60,
+          child: const Icon(Icons.check),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              radius: 1,
+              center: Alignment(-0.1, -0.6),
+              colors: [
+                AppColors.buttonFirstColor,
+                AppColors.buttonSecondColor,
+              ],
+            ),
           ),
         ),
-      ),
-      onPressed: () => _controller.newTicket(),
-    );
+        onPressed: () => _controller.newTicket(),
+      );
+    }
   }
 }

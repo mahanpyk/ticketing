@@ -9,6 +9,7 @@ abstract class TicketDetailsRepository extends BaseRepository {
     required String description,
     required String date,
     required String isRead,
+    required String fullName,
     required String replay,
   });
 
@@ -19,6 +20,7 @@ abstract class TicketDetailsRepository extends BaseRepository {
     required String description,
     required String date,
     required String isRead,
+    required String fullName,
   });
 
   Future<ApiResult<String>> getFullName({required int userId});
@@ -33,6 +35,7 @@ class TicketDetailsRepositoryImp extends TicketDetailsRepository {
     required String description,
     required String date,
     required String isRead,
+    required String fullName,
     required String replay,
   }) async {
     final response = await postRequest(
@@ -44,6 +47,7 @@ class TicketDetailsRepositoryImp extends TicketDetailsRepository {
         'userId': userId,
         'date': date,
         'isRead': isRead,
+        'fullName': fullName,
         'replay': replay,
       },
     );
@@ -61,6 +65,7 @@ class TicketDetailsRepositoryImp extends TicketDetailsRepository {
     required String description,
     required String date,
     required String isRead,
+    required String fullName,
   }) async {
     final response = await postRequest(
       url: 'update_ticket.php',
@@ -71,6 +76,7 @@ class TicketDetailsRepositoryImp extends TicketDetailsRepository {
         'userId': userId,
         'date': date,
         'isRead': isRead,
+        'fullName': fullName,
       },
     );
     if (response == Exception()) {

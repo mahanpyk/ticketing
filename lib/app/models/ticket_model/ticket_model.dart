@@ -12,6 +12,7 @@ class TicketModel with _$TicketModel {
     required String userId,
     required String date,
     required String isRead,
+    required String fullName,
     String? replay,
   }) = _TicketModel;
 

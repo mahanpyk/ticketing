@@ -13,7 +13,7 @@ class HomePage extends BaseView {
   @override
   Widget body(BuildContext context) {
     return Obx(() {
-      if (_controller.ticketsList.isNotEmpty) {
+      if (_controller.ticketsReadList.isNotEmpty) {
         return Column(
           children: [
             Expanded(
@@ -21,40 +21,49 @@ class HomePage extends BaseView {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: ListView.builder(
-                  itemCount: _controller.ticketsList.length,
+                  itemCount: _controller.ticketsReadList.length,
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Card(
-                          color: AppColors.surfaceDark,
+                    if (_controller.ticketsReadList[index] is String) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: Text(
+                          _controller.ticketsReadList[index],
+                          style: Get.theme.textTheme.headline5,
+                        )),
+                      );
+                    } else {
+                      return Card(
+                        color: AppColors.surfaceDark,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        elevation: 4,
+                        child: ListTile(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
-                          elevation: 4,
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            tileColor: AppColors.surfaceDark,
-                            textColor: Colors.white,
-                            title: Text(
-                              dropdownStringItems(int.parse(
-                                  _controller.ticketsList[index].unitId)),
-                              style: Get.theme.textTheme.bodyText1,
-                            ),
-                            subtitle: Text(
-                              _controller.ticketsList[index].description,
-                              style: Get.theme.textTheme.caption!
-                                  .copyWith(color: AppColors.subTitleTextColor),
-                            ),
-                            trailing: Text(
-                              _controller.ticketsList[index].date,
-                              style: Get.theme.textTheme.overline,
-                            ),
-                            onTap: () => _controller.onTapTicket(
-                                item: _controller.ticketsList[index]),
+                          tileColor: AppColors.surfaceDark,
+                          textColor: Colors.white,
+                          title: Text(
+                            dropdownStringItems(int.parse(
+                                _controller.ticketsReadList[index].unitId)),
+                            style: Get.theme.textTheme.bodyText1,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
+                          subtitle: Text(
+                            _controller.ticketsReadList[index].description,
+                            style: Get.theme.textTheme.caption!
+                                .copyWith(color: AppColors.subTitleTextColor),
+                          ),
+                          trailing: Text(
+                            _controller.ticketsReadList[index].date,
+                            style: Get.theme.textTheme.overline,
+                          ),
+                          onTap: () => _controller.onTapTicket(
+                              item: _controller.ticketsReadList[index]),
                         ),
-                      ],
-                    );
+                      );
+                    }
                   },
                 ),
               ),
@@ -87,25 +96,29 @@ class HomePage extends BaseView {
 
   @override
   Widget? floatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: AppColors.buttonFirstColor,
-      child: Container(
-        width: 60,
-        height: 60,
-        child: const Icon(Icons.add),
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            radius: 1,
-            center: Alignment(-0.1, -0.6),
-            colors: [
-              AppColors.buttonFirstColor,
-              AppColors.buttonSecondColor,
-            ],
+    if (_controller.userModel!.unitId != '8') {
+      return null;
+    } else {
+      return FloatingActionButton(
+        backgroundColor: AppColors.buttonFirstColor,
+        child: Container(
+          width: 60,
+          height: 60,
+          child: const Icon(Icons.add),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              radius: 1,
+              center: Alignment(-0.1, -0.6),
+              colors: [
+                AppColors.buttonFirstColor,
+                AppColors.buttonSecondColor,
+              ],
+            ),
           ),
         ),
-      ),
-      onPressed: () => _controller.newTicket(),
-    );
+        onPressed: () => _controller.newTicket(),
+      );
+    }
   }
 }

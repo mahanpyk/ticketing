@@ -10,7 +10,7 @@ class HomeController extends GetxController {
 
   final HomeRepository _repository;
   final UserModel? userModel = UserStoreService.to.getUser();
-  final RxList ticketsList = <TicketModel>[].obs;
+  final RxList ticketsReadList = [].obs;
   var noResult = false.obs;
 
   @override
@@ -26,12 +26,15 @@ class HomeController extends GetxController {
     );
     response.when(
         success: (data) {
-          if (data.isEmpty) {
+          if (data['unReadList'].isEmpty && data['readList'].isEmpty) {
             noResult(true);
           } else {
             noResult(false);
-            ticketsList.clear();
-            ticketsList.addAll(data);
+            ticketsReadList.clear();
+            ticketsReadList.add('--- تیکت های پاسخ داده شده ---');
+            ticketsReadList.addAll(data['readList']);
+            ticketsReadList.add('--- تیکت های بدون پاسخ ---');
+            ticketsReadList.addAll(data['unReadList']);
           }
         },
         failure: (error) {});
@@ -55,6 +58,6 @@ class HomeController extends GetxController {
   @override
   void dispose() {
     super.dispose();
-    ticketsList.close();
+    ticketsReadList.close();
   }
 }

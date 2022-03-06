@@ -1,3 +1,13 @@
+const dropdownItems = <String>[
+  "--انتخاب کنید--",
+  "سراسري",
+  "كارداني فني و حرفه اي",
+  "كارداني به كارشناسي",
+  "دانشگاه جامع علمي و كاربردي (كارداني/كارشناسي)",
+  "كارشناسي ارشد",
+  "دكتري"
+];
+
 int dropdownIntegerItems(String input) {
   int result;
   switch (input) {
