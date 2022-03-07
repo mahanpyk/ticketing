@@ -54,6 +54,8 @@ class HomePage extends BaseView {
                             _controller.ticketsReadList[index].description,
                             style: Get.theme.textTheme.caption!
                                 .copyWith(color: AppColors.subTitleTextColor),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           trailing: Text(
                             _controller.ticketsReadList[index].date,
