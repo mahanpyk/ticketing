@@ -31,9 +31,13 @@ class HomeController extends GetxController {
           } else {
             noResult(false);
             ticketsReadList.clear();
-            ticketsReadList.add('--- تیکت های پاسخ داده شده ---');
+            if (data['readList'].isNotEmpty) {
+              ticketsReadList.add('--- تیکت های پاسخ داده شده ---');
+            }
             ticketsReadList.addAll(data['readList']);
-            ticketsReadList.add('--- تیکت های بدون پاسخ ---');
+            if (data['unReadList'].isNotEmpty) {
+              ticketsReadList.add('--- تیکت های بدون پاسخ ---');
+            }
             ticketsReadList.addAll(data['unReadList']);
           }
         },
