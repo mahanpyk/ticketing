@@ -20,42 +20,48 @@ class LoginController extends GetxController {
         userName: userNameController.text,
         password: passwordController.text,
       );
-      response.when(
-          success: (data) {
-            if (data['message'] == 'Login Successful') {
-              UserStoreService.to.saveUser(data['data']);
-              Get.offAndToNamed(Routes.HOME);
-            } else if (data['message'] == 'UserName is Empty') {
-              Get.snackbar(
-                'خطا در ورود اطلاعات',
-                'نام کاربری وارد نشده است',
-                backgroundColor: Colors.grey,
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            } else if (data['message'] == 'Password is Empty') {
-              Get.snackbar(
-                'خطا در ورود اطلاعات',
-                'کلمه عبور وارد نشده است',
-                backgroundColor: Colors.grey,
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            } else if (data['message'] == 'Login Failed') {
-              Get.snackbar(
-                'ورود ناموفق',
-                '!هیچ کاربری با اطلاعات وارد شده یافت نشد',
-                backgroundColor: Colors.grey,
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            } else {
-              Get.snackbar(
-                'ورود ناموفق',
-                'مشکل در ارتباط با سرور',
-                backgroundColor: Colors.grey,
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            }
-          },
-          failure: (error) {});
+      response.when(success: (data) {
+        if (data['message'] == 'Login Successful') {
+          UserStoreService.to.saveUser(data['data']);
+          Get.offAndToNamed(Routes.HOME);
+        } else if (data['message'] == 'UserName is Empty') {
+          Get.snackbar(
+            'خطا در ورود اطلاعات',
+            'نام کاربری وارد نشده است',
+            backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } else if (data['message'] == 'Password is Empty') {
+          Get.snackbar(
+            'خطا در ورود اطلاعات',
+            'کلمه عبور وارد نشده است',
+            backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } else if (data['message'] == 'Login Failed') {
+          Get.snackbar(
+            'ورود ناموفق',
+            '!هیچ کاربری با اطلاعات وارد شده یافت نشد',
+            backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } else {
+          Get.snackbar(
+            'ورود ناموفق',
+            'مشکل در ارتباط با سرور',
+            backgroundColor: Colors.grey,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      }, failure: (error) {
+        Get.snackbar(
+          'ورود ناموفق',
+          'مشکل در ارتباط با سرور',
+          backgroundColor: Colors.grey,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      });
+      formKey.currentState?.validate();
     } else {
       onTapLogin = true;
       formKey.currentState?.validate();
